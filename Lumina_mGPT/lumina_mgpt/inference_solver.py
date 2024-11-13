@@ -9,8 +9,8 @@ import transformers
 from transformers import GenerationConfig, TextStreamer
 from transformers.generation.logits_process import LogitsProcessor, LogitsProcessorList, LogitsWarper
 
-from data.item_processor import FlexARItemProcessor
-from model.chameleon import ChameleonForConditionalGeneration
+from Lumina_mGPT.lumina_mgpt.data.item_processor import FlexARItemProcessor
+from Lumina_mGPT.lumina_mgpt.model.chameleon import ChameleonForConditionalGeneration
 
 
 class LLMImageStartTriggeredUnbatchedClassifierFreeGuidanceLogitsProcessor(LogitsProcessor):
@@ -419,7 +419,7 @@ class FlexARInferenceSolver:
         logits_processor.append(candidate_processor)
         logits_processor.append(topk_processor)
 
-        if additional_logits_processor is not None:
+        if additional_logits_processor_list is not None:
             for lp in additional_logits_processor:
                 logits_processor.append(lp)
 

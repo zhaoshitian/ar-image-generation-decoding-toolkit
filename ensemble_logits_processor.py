@@ -4,13 +4,9 @@ import math
 from typing import List, Optional, Union
 
 from PIL import Image
-from chameleon_inference.image_tokenizer import ImageTokenizer
 import torch
 from transformers import GenerationConfig, TextStreamer
 from transformers.generation.logits_process import LogitsProcessor, LogitsProcessorList, LogitsWarper
-
-from item_processor import FixARItemProcessor, VarARItemProcessor
-from model.chameleon import ChameleonForCausalLM
 import numpy as np
 
 def softmax(x):

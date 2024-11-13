@@ -300,7 +300,7 @@ def write_model(model_path, input_base_path, model_size, chameleon_version=1):
         )
 
     # Load VQGAN weights
-    vqgan_path = os.path.join(input_base_path, "tokenizer/vqgan.ckpt")
+    vqgan_path = os.path.join(input_base_path, "/mnt/petrelfs/gaopeng/zl/chameleon/data/tokenizer/vqgan.ckpt")
     vqgan_state_dict = torch.load(vqgan_path, map_location="cpu")["state_dict"]
     for k, v in vqgan_state_dict.items():
         if "decoder" in k:
@@ -311,7 +311,7 @@ def write_model(model_path, input_base_path, model_size, chameleon_version=1):
     ffn_dim_multiplier = params["ffn_dim_multiplier"] if "ffn_dim_multiplier" in params else 1
     multiple_of = params["multiple_of"] if "multiple_of" in params else 256
 
-    with open(os.path.join(input_base_path, "tokenizer/text_tokenizer.json")) as tokenizer_file:
+    with open(os.path.join(input_base_path, "/mnt/petrelfs/gaopeng/zl/chameleon/data/tokenizer/text_tokenizer.json")) as tokenizer_file:
         tokenizer_config = json.load(tokenizer_file)
         vocabulary_map = tokenizer_config["model"]["vocab"]
         vocabulary_map["<image>"] = vocabulary_map[
@@ -323,7 +323,7 @@ def write_model(model_path, input_base_path, model_size, chameleon_version=1):
             if token["content"] == "<reserved08707>":
                 token["content"] = "<image>"
 
-    with open(os.path.join(input_base_path, "tokenizer/text_tokenizer_modified.json"), "w") as f:
+    with open(os.path.join(input_base_path, "/mnt/petrelfs/gaopeng/zl/chameleon/data/tokenizer/text_tokenizer_modified.json"), "w") as f:
         json.dump(tokenizer_config, f)  # save the new file to init tokenizer later
 
     vq_keys_to_replace = [
@@ -334,7 +334,7 @@ def write_model(model_path, input_base_path, model_size, chameleon_version=1):
         ("double_z", "double_latent"),
         ("z_channels", "latent_channels"),
     ]
-    with open(os.path.join(input_base_path, "tokenizer/vqgan.yaml")) as vqgan_cfg_file:
+    with open(os.path.join(input_base_path, "/mnt/petrelfs/gaopeng/zl/chameleon/data/tokenizer/vqgan.yaml")) as vqgan_cfg_file:
         vq_config = yaml.safe_load(vqgan_cfg_file)["model"]["params"]
         vq_config.update(**vq_config["ddconfig"])
         for old, new in vq_keys_to_replace:
@@ -366,7 +366,7 @@ def write_model(model_path, input_base_path, model_size, chameleon_version=1):
 
     # Load and save the processor
     tokenizer = LlamaTokenizerFast(
-        tokenizer_file=os.path.join(input_base_path, "tokenizer/text_tokenizer_modified.json"), legacy=False
+        tokenizer_file=os.path.join(input_base_path, "/mnt/petrelfs/gaopeng/zl/chameleon/data/tokenizer/text_tokenizer_modified.json"), legacy=False
     )
     tokenizer.sep_token_id = 8710  # assign <reserved08706> to sep so that we can append it after input text
     tokenizer.pad_token_id = 1  # assing <pad> to special pad_token

@@ -6,10 +6,10 @@ from typing import Dict, List
 from PIL import Image
 import torch
 
-from data.convertsation import Conversation
-import model.chameleon_vae_ori as chameleon_vae_ori
-from xllmx.data.data_reader import read_general
-from xllmx.data.item_processor import MMConvItemProcessor
+from Lumina_mGPT.lumina_mgpt.data.convertsation import Conversation
+import Lumina_mGPT.lumina_mgpt.model.chameleon_vae_ori as chameleon_vae_ori
+from Lumina_mGPT.xllmx.data.data_reader import read_general
+from Lumina_mGPT.xllmx.data.item_processor import MMConvItemProcessor
 
 logger = logging.getLogger(__name__)
 
@@ -85,12 +85,12 @@ class FlexARItemProcessor(MMConvItemProcessor):
         #  currently still use the original image tokenizer provided by Meta rather than transformers
         #  because the transformers implementation does not contain the vae decoder
         self.chameleon_ori_vocab = chameleon_vae_ori.VocabInfo(
-            json.load(open("./ckpts/chameleon/tokenizer/text_tokenizer.json", encoding="utf8"))["model"]["vocab"]
+            json.load(open("/mnt/petrelfs/gaopeng/zl/chameleon/data/tokenizer/text_tokenizer.json", encoding="utf8"))["model"]["vocab"]
         )
         self.chameleon_ori_translation = chameleon_vae_ori.VocabTranslation(self.chameleon_ori_vocab, device="cuda")
         self.chameleon_ori_image_tokenizer = chameleon_vae_ori.ImageTokenizer(
-            cfg_path="./ckpts/chameleon/tokenizer/vqgan.yaml",
-            ckpt_path="./ckpts/chameleon/tokenizer/vqgan.ckpt",
+            cfg_path="/mnt/petrelfs/gaopeng/zl/chameleon/data/tokenizer/vqgan.yaml",
+            ckpt_path="/mnt/petrelfs/gaopeng/zl/chameleon/data/tokenizer/vqgan.ckpt",
             device="cuda",
         )
 

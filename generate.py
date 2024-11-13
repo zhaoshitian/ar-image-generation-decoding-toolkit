@@ -1,18 +1,20 @@
 import os
 import sys
 
-sys.path.append(os.path.abspath(__file__).rsplit("/", 2)[0])
+# sys.path.append(os.path.abspath(__file__).rsplit("/", 2)[0])
+sys.path.append("/mnt/petrelfs/gaopeng/zst/ar-image-generation-decoding-toolkit")
 import argparse
 
 from PIL import Image
 import torch
 
-from Lumina_mGPT.inference_solver import FlexARInferenceSolver
+from Lumina_mGPT.lumina_mgpt.inference_solver import FlexARInferenceSolver
 from Lumina_mGPT.xllmx.util.misc import random_seed
 
 from ensemble_logits_processor import EnsembleLogitsProcessor
 from i2icfg_logits_processor import I2ILLMImageStartTriggeredUnbatchedClassifierFreeGuidanceLogitsProcessor
 from minp_logits_processor import MinPLogitsWarper
+from dynamicT_logits_processor import DynamicTemperatureLogitsWarper
 
 if __name__ == "__main__":
 
