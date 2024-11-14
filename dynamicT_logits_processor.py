@@ -76,7 +76,16 @@ class DynamicTemperatureLogitsWarper(LogitsProcessor):
     ```
     """
 
-    def __init__(self, temperature: float, hot_temperature: float, num_hot_tokens: int):
+    def __init__(
+        self,
+        temperature: float, 
+        hot_temperature: float, 
+        num_hot_tokens: int,
+        image_start_token_id,
+        image_end_token_id,
+        image_next_line_token_id,
+        patch_size,
+        use_cache: Optional[bool] = True):
         if not isinstance(temperature, float) or not (temperature > 0):
             except_msg = (
                 f"`temperature` (={temperature}) has to be a strictly positive float, otherwise your next token "
@@ -99,7 +108,7 @@ class DynamicTemperatureLogitsWarper(LogitsProcessor):
         self.h_latent_dim = None
         self.w_latent_dim = None
 
-    @add_start_docstrings(LOGITS_PROCESSOR_INPUTS_DOCSTRING)
+    # @add_start_docstrings(LOGITS_PROCESSOR_INPUTS_DOCSTRING)
     # def __call__(self, input_ids: torch.LongTensor, scores: torch.FloatTensor) -> torch.FloatTensor:
     #     scores_processed = scores / self.temperature
     #     return scores_processed

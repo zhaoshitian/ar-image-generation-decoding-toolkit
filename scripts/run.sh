@@ -8,4 +8,4 @@ python /mnt/petrelfs/gaopeng/zst/ar-image-generation-decoding-toolkit/generate.p
     --n 5 \
     --width 1024 \
     --height 1024 \
-    --lp_list ["ensemble"] 
+    --lp_list 4
