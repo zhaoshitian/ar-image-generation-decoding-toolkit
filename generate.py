@@ -44,7 +44,7 @@ def init_logits_processor(index):
         #     patch_size=32,
         #     threshold=cfg_threshold,
         # )
-        partial_ensemblelogitsprocessor = partial(EnsembleLogitsProcessor, params_dict**)
+        partial_ensemblelogitsprocessor = partial(EnsembleLogitsProcessor, **params_dict)
     elif index == 2:
         minplogitwraper = MinPLogitsWarper(
             min_p=min_p
@@ -55,15 +55,15 @@ def init_logits_processor(index):
         # ) 
         pass
     elif index == 4:
-        dynamicTprocessor = DynamicTemperatureLogitsWarper(
-            temperature=1.0, 
-            hot_temperature=30, 
-            num_hot_tokens=1,
-            image_start_token_id=self.item_processor.token2id(self.item_processor.image_start_token),
-            image_end_token_id=self.item_processor.token2id(self.item_processor.image_end_token),
-            image_next_line_token_id=self.item_processor.token2id(self.item_processor.new_line_token),
-            patch_size=32
-        ) 
+        # dynamicTprocessor = DynamicTemperatureLogitsWarper(
+        #     temperature=1.0, 
+        #     hot_temperature=30, 
+        #     num_hot_tokens=1,
+        #     image_start_token_id=self.item_processor.token2id(self.item_processor.image_start_token),
+        #     image_end_token_id=self.item_processor.token2id(self.item_processor.image_end_token),
+        #     image_next_line_token_id=self.item_processor.token2id(self.item_processor.new_line_token),
+        #     patch_size=32
+        # ) 
 
         params_dict = {
             "temperature": 1.0,
@@ -80,7 +80,7 @@ def init_logits_processor(index):
         #     image_next_line_token_id=self.item_processor.token2id(self.item_processor.new_line_token),
         #     patch_size=32
         # ) 
-        partial_dynamicTlogitsprocessor = partial(DynamicTemperatureLogitsWarper, params_dict**)
+        partial_dynamicTlogitsprocessor = partial(DynamicTemperatureLogitsWarper, **params_dict)
         return [partial_dynamicTlogitsprocessor], "dynamicT"
 
     
@@ -118,13 +118,20 @@ if __name__ == "__main__":
     n = args.n
     w, h = args.width, args.height
 
-    additional_logits_processor, name_logits_processor = init_logits_processor(args.lp_list)
-    generated_images_dir_path = f"T{t}_topk{top_k}_cfg{cfg}_w{w}_h{h}_lp{str(name_logits_processor)}"
-
     inference_solver = FlexARInferenceSolver(
         model_path=args.model_path,
         precision="bf16",
     )
+
+    additional_logits_processor, name_logits_processor = init_logits_processor(args.lp_list)
+    ## just for dynamicT decoding method ##
+    additional_logits_processor = additional_logits_processor[0](
+        image_start_token_id=inference_solver.item_processor.token2id(inference_solver.item_processor.image_start_token),
+        image_end_token_id=inference_solver.item_processor.token2id(inference_solver.item_processor.image_end_token),
+        image_next_line_token_id=inference_solver.item_processor.token2id(inference_solver.item_processor.new_line_token),
+    )
+
+    generated_images_dir_path = f"T{t}_topk{top_k}_cfg{cfg}_w{w}_h{h}_lp{str(name_logits_processor)}"
 
     with torch.no_grad():
         l_generated_all = []
@@ -136,7 +143,7 @@ if __name__ == "__main__":
                     qas=[[f"Generate an image of {w}x{h} according to the following prompt:\n{prompt}", None]],
                     max_gen_len=8192,
                     temperature=t,
-                    logits_processor=inference_solver.create_logits_processor(cfg=cfg, image_top_k=top_k, additional_logits_processor_list=additional_logits_processor),
+                    logits_processor=inference_solver.create_logits_processor(cfg=cfg, image_top_k=top_k, additional_logits_processor_list=[additional_logits_processor]),
                 )
                 try:
                     l_generated_all.append(generated[1][0])

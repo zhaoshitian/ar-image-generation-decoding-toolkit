@@ -420,7 +420,7 @@ class FlexARInferenceSolver:
         logits_processor.append(topk_processor)
 
         if additional_logits_processor_list is not None:
-            for lp in additional_logits_processor:
+            for lp in additional_logits_processor_list:
                 logits_processor.append(lp)
 
         return logits_processor
