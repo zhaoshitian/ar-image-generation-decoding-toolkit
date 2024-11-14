@@ -1,5 +1,5 @@
 # ar-image-generation-decoding-toolkit
-![alt text](assets/0.webp)
+![ar-image-generation-decoding-toolkit logo](assets/0.webp)
 The **ar-image-generation-decoding-toolkit** is a specialized toolkit focused on decoding techniques for autoregressive image generation models. This toolkit implements several state-of-the-art decoding strategies, such as **minP**, **ensemble**, **dynamicT**, and **classifier-free guidance**, specifically designed to enhance the quality and control of generated images from autoregressive models.
 
 In the future, more advanced decoding techniques will be added to improve functionality and expand the range of supported models.
