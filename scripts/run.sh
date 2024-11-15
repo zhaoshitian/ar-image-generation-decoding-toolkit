@@ -5,7 +5,7 @@ python /mnt/petrelfs/gaopeng/zst/ar-image-generation-decoding-toolkit/generate.p
     --temperature 1.0 \
     --top_k 4000 \
     --cfg 4.0 \
-    --n 5 \
+    --n 1 \
     --width 1024 \
     --height 1024 \
     --lp_list 4

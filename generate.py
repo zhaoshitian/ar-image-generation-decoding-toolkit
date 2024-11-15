@@ -12,10 +12,10 @@ import torch
 from Lumina_mGPT.lumina_mgpt.inference_solver import FlexARInferenceSolver
 from Lumina_mGPT.xllmx.util.misc import random_seed
 
-from ensemble_logits_processor import EnsembleLogitsProcessor
-from i2icfg_logits_processor import I2ILLMImageStartTriggeredUnbatchedClassifierFreeGuidanceLogitsProcessor
-from minp_logits_processor import MinPLogitsWarper
-from dynamicT_logits_processor import DynamicTemperatureLogitsWarper
+from decoding_strategy.ensemble_logits_processor import EnsembleLogitsProcessor
+from decoding_strategy.i2icfg_logits_processor import I2ILLMImageStartTriggeredUnbatchedClassifierFreeGuidanceLogitsProcessor
+from decoding_strategy.minp_logits_processor import MinPLogitsWarper
+from decoding_strategy.dynamicT_logits_processor import DynamicTemperatureLogitsWarper
 
 def checkpath(path):
     if not os.path.exists(path):
