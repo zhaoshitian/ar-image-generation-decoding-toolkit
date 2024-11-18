@@ -67,8 +67,8 @@ def init_logits_processor(index):
 
         params_dict = {
             "temperature": 1.0,
-            "hot_temperature": 30,
-            "num_hot_tokens": 1,
+            "hot_temperature": 500,
+            "num_hot_tokens": 10,
             "patch_size": 32,
         }
         # dynamicTprocessor = DynamicTemperatureLogitsWarper(
@@ -81,7 +81,7 @@ def init_logits_processor(index):
         #     patch_size=32
         # ) 
         partial_dynamicTlogitsprocessor = partial(DynamicTemperatureLogitsWarper, **params_dict)
-        return [partial_dynamicTlogitsprocessor], "dynamicT"
+        return [partial_dynamicTlogitsprocessor], f"dynamicT_temperature{params_dict['temperature']}_hottemperature{params_dict['hot_temperature']}_nums{params_dict['num_hot_tokens']}"
 
     
 
@@ -110,7 +110,30 @@ if __name__ == "__main__":
         "Image of a quiet European village with cobblestone streets and colorful houses, under a clear blue sky.",
     ]
 
-    l_prompts = select_set1
+    prompt_list = [
+        "A serene image of a cat sitting by a window, watching the rain outside.",
+        "A group of friends gathered around a bonfire on a beach, roasting marshmallows and enjoying the sunset.",
+        "A close-up photograph of an elderly man with a kind smile, wearing a tweed cap, surrounded by his garden of blooming roses.",
+        "An aerial view of a vibrant city park filled with people enjoying a sunny day, with a large pond in the center.",
+        "A picture of a young child's hands holding a colorful, freshly baked birthday cake.",
+        "A panoramic shot of a mountain range at sunrise, with the first rays of light illuminating the snow-capped peaks.",
+        "An image of a bustling farmer's market with stalls overflowing with fresh fruits, vegetables, and flowers.",
+        "A portrait of a young woman with dreadlocks, wearing a flowing bohemian dress, standing in a field of sunflowers.",
+        "A snapshot of a skateboarder performing a trick at a skate park, with a crowd of onlookers cheering.",
+        "A photograph of a couple dancing in an empty ballroom, bathed in the soft glow of chandelier lights.",
+        "An image of a tranquil lake with a single kayaker paddling through the misty morning.",
+        "A close-up of a chef at work in a busy kitchen, plating a gourmet dish with precision.",
+        "A picture of a group of children playing in a fountain on a hot summer day.",
+        "A photograph of a lone hiker standing on a mountaintop, with a vast forest stretching out below.",
+        "An image of a city's skyline at dusk, with the last rays of sunlight reflecting off the glass buildings.",
+        "A portrait of a musician deeply engrossed in playing the violin, surrounded by an audience in a dimly lit concert hall.",
+        "A picture of a bustling night market with a variety of food stalls, lanterns, and bustling crowds.",
+        "An image of a cyclist racing down a country road, with golden wheat fields on either side.",
+        "A photograph of a couple walking hand-in-hand on a beach at sunset, with the waves gently lapping at their feet.",
+        "An image of a group of elderly people playing chess in a park, surrounded by autumn leaves."
+    ]
+
+    l_prompts = prompt_list
 
     t = args.temperature
     top_k = args.top_k
@@ -156,5 +179,5 @@ if __name__ == "__main__":
                 except:
                     l_generated_all.append(Image.new("RGB", (w, h)))
 
-        result_image = inference_solver.create_image_grid(l_generated_all, len(l_prompts), n)
-        result_image.save(args.save_path)
+        # result_image = inference_solver.create_image_grid(l_generated_all, len(l_prompts), n)
+        # result_image.save(args.save_path)
